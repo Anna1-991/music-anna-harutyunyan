@@ -1,0 +1,12 @@
+.liked_container{
+    display: none;
+    max-width: 1300px;
+    width: 100%;
+    height: 1000px;
+    margin-top: 50px;
+    background-color:#ffff;
+    position: absolute;
+    top: 0;
+    left: 100px;
+    z-index: 5;
+}
