@@ -41,25 +41,4 @@ export const fetchToken = async () => {
     }
 };
 
-export const initializeStateFromLocalStorage = () => {
-    const likedMusicData = JSON.parse(localStorage.getItem("likedMusic"));
-    return likedMusicData || []; // Initialize likedMusic with the stored data or an empty array
-};
 
-
-// Example usage
-// export  async function useData () {
-//     try {
-//         // Fetch token
-//         const token = await fetchToken();
-//         // Fetch music data using the token
-//         const tracks = await fetchMusicData("keyword", 0, token);
-//         console.log(tracks); // Handle fetched tracks as needed
-
-//         // Initialize state from local storage
-//         const likedMusic = initializeStateFromLocalStorage();
-//         console.log(likedMusic); // Use initialized likedMusic array
-//     } catch (error) {
-//         console.error(error.message);
-//     }
-// };
