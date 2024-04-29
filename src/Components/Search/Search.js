@@ -9,40 +9,6 @@ export const Search = () => {
     cardContainer.className = "card_container";
     searchContainer.className = "search_container";
     searchContainer.append(inputSearch, cardContainer);
-    //provides search, when input value is false or empty it log the message, 
-    //else get the data and create the music cards
-    const handleSearch = async () => {
-        const searchValue = inputSearch.value;
-        if (!searchValue || searchValue === "") {
-            console.log("Please enter a search term.");
-            return null; // Exit function if search value is empty
-        } else {
-            try {
-                //import tocken and musicdata
-                const token = await fetchToken();
-                const tracks = await fetchMusicData(searchValue, 0, token);
-                cardContainer.innerHTML = ""; // Clear previous search results
-                tracks
-                    .map((track) => createCard(track))//create card for each track
-                    .filter((card) => card !== null) // filter cards with null
-                    .forEach((card) => cardContainer.appendChild(card));//each card apend to cardcontainer
-            } catch (error) {
-                console.log("Request failed:", error);
-            }
-        }
-    };
-    //shows reault of serch when press enter key
-    const handleEnterKeyPress = (event) => {
-        if (event.key === "Enter") {
-            handleSearch();
-        }
-    };
-    //clear card container if input value is empty
-    const handleInputChange = () => {
-        if (inputSearch.value === "") {
-            cardContainer.innerHTML = ""; 
-        }
-    };
     //function that create cards
     const createCard = (track) => {
         if (track.preview_url === null) {
@@ -58,7 +24,7 @@ export const Search = () => {
         const audio = document.createElement("div");
         const audioTrack = document.createElement("audio");
         const likeButton = document.createElement("button");
-        //take info from API 
+        //take info from API and referance it to each element
         card.className = "card";
         image.src = track.album.images[0].url;
         artistName.innerText = track.album.artists[0].name;
@@ -75,13 +41,48 @@ export const Search = () => {
 
         return card;
     };
+    //get searched value from API
+    const handleSearch = async () => {
+        const searchValue = inputSearch.value;
+        if (!searchValue || searchValue === "") {
+            console.log("Please enter a search term.");
+            return null; // exit function if search value is empty
+        } else {
+            try {
+                //import tocken and musicdata
+                const token = await fetchToken();
+                const tracks = await fetchMusicData(searchValue, 0, token);
+                cardContainer.innerHTML = ""; // clear previous search results
+                tracks
+                    .map((track) => createCard(track)) //create card for each track
+                    .filter((card) => card !== null) // filter cards with null
+                    .forEach((card) => cardContainer.appendChild(card)); //each card apend to cardcontainer
+            } catch (error) {
+                console.log("Request failed:", error);
+            }
+        }
+    };
+    //shows reault of search when press enter key
+    const handleEnterKeyPress = (event) => {
+        if (event.key === "Enter") {
+            handleSearch();
+        }
+    };
+    //clear card container if input value is empty
+    const handleInputChange = () => {
+        if (inputSearch.value === "") {
+            cardContainer.innerHTML = "";
+        }
+    };
 
     const handleLike = (track) => {
         const likedCard = createCard(track); // create a card for the liked track
-        const removeButton = document.createElement('button');
-        removeButton.innerHTML = 'Remove from playlist'
+        const removeButton = document.createElement("button");
+        removeButton.innerHTML = "Remove from playlist";
         likedCard.append(removeButton);
-        removeButton.addEventListener('click', () => {
+        removeButton.className = 'remove_btn';
+        //event listner for remove button
+        removeButton.addEventListener("click", () => {
             likedCard.remove(); // remove the clicked card from the DOM
         });
         likedMusic.appendChild(likedCard); // append the liked card to the likedMusicContainer
