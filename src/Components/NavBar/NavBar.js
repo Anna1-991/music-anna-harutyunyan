@@ -1,25 +1,27 @@
 import { likedMusic } from "../../../index.js";
-// import { fetchMusicData, fetchToken } from "../../helpers/api.js";
 
 export function NavBar() {
     //creates html elements using DOM manipulatuions
     const navBar = document.createElement("nav");
-    const formContainer = document.createElement("form");
-    const inputSearch = document.createElement("input");
     const button = document.createElement("button");
     //append each element to each other
-    navBar.append(formContainer);
-    formContainer.append(button);
-    formContainer.append(inputSearch);
-
-    inputSearch.placeholder = "Search music";
+    navBar.append(button);
+    
     button.innerHTML = `<i class="fa-solid fa-heart fa-beat-fade"></i> My Playlist`;
 
     button.addEventListener('click', () => {
-        likedMusic.style.display = 'block'
+        if (likedMusic.style.display === 'block') {
+            likedMusic.style.display = 'none';
+        }else{
+            likedMusic.style = `display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 100px 0 20px 0;`
+            likedMusic.classList.add('fade_in');
+        }
     });
     
-    formContainer.className = "form_container";
-    // inputSearch.addEventListener("input", handleSearch);
+    navBar.className = "nav_container";
     return navBar;
 }
